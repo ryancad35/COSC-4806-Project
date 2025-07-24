@@ -25,7 +25,7 @@ class Movie extends Controller {
                 return;
             }
             
-        // if movie is found, display movie details
+        // if movie is found, display movie details on same page
         $this->view('movie/index', ['movie' => $movie]);
     }
 
@@ -36,12 +36,28 @@ class Movie extends Controller {
         // Movie Rating: 1 (a href=/movie/review/movietitle/1), 2, 3, 4, 5 -> [Submit Button]
         // Use bootstrap for submit button (5 stars)
             // getbootstrap.com > star icons
-        
-
-        $this->view('movie/results', ['movie' => $movie]);
     }
 
-    public function review($movie_title = '', $release_date = '', $rating = '') {
-        // if rating isn't 1,2,3,4,5 etc.
+    public function review($movie_title = '', $movie_year = '', $rating = '') {
+        // if rating isn't 1-5, redirect to movie page
+        if (!in_array($rating, ['1', '2', '3', '4', '5'])) {
+            header('Location: /movie');
+            exit;
+        }
+
+        // Tie movie controller to rating model
+        $rating_model = $this->model('Rating');
+
+        // Check if user is logged in
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // user_id gets set to null in our DB if user is not logged in
+
+        // Add rating to our database
+        $rating_model->add_rating($movie_title, $movie_year, $rating, $user_id);
+        $success_message = 'Rating submitted successfully!';
+
+        // Create a session variable to store the success message
+        $_SESSION['success_message'] = $success_message;
+        header('Location: /movie/search?movie=' . urlencode($movie_title) . '&release_date=' . urlencode($movie_year));
+        exit;
     }
 }
