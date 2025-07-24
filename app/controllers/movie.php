@@ -24,7 +24,10 @@ class Movie extends Controller {
                 $this->view('movie/index', ['error' => $error_message]);
                 return;
             }
-        }
+            
+        // if movie is found, display movie details
+        $this->view('movie/index', ['movie' => $movie]);
+    }
 
         // COSC PRoject
         // Movie [search....]
