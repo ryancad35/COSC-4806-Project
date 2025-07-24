@@ -1,0 +1,244 @@
+/* Reset & base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 70px; 
+}
+
+main {
+    padding: 20px 0;
+    padding-bottom: 50px; 
+}
+
+.container {
+    padding-bottom: 50px !important; /* Override Bootstrap padding */
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    padding: 15px 0;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    color: #666;
+    background: #f8f9fa;
+    z-index: 1000;
+    box-sizing: border-box;
+    line-height: 1;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+/* Page header */
+.page-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+.page-header h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #212529;
+}
+.lead {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+/* Navbar */
+.navbar {
+    background: #343a40;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.navbar .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar-brand {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+.navbar-brand:hover {
+    color: #fff;
+}
+.navbar-nav {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+.nav-item {
+    position: relative;
+}
+.nav-link {
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.nav-link:hover {
+    background: #495057;
+}
+/* Dropdown */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #343a40;
+    border: 1px solid #495057;
+    border-radius: 4px;
+    flex-direction: column;
+    min-width: 150px;
+    z-index: 1000;
+}
+.nav-item:hover > .dropdown-menu {
+    display: flex;
+}
+.dropdown-item {
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-bottom: 1px solid #495057;
+}
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+.dropdown-item:hover {
+    background: #495057;
+}
+
+/* Logout link spacing */
+.logout-link {
+    margin: 1.5rem 0;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #495057;
+}
+.form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn:hover {
+    background: #0056b3;
+}
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Alerts */
+.alert {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Textarea specific styling */
+textarea.form-control {
+    min-height: 80px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* Reminders list styling */
+.reminders-list {
+    margin-top: 20px;
+}
+
+.reminders-list p {
+    margin-bottom: 0.5rem;
+}
+
+.reminders-list hr {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* Fieldset styling */
+fieldset {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+legend {
+    padding: 0 0.5rem;
+    font-weight: bold;
+    color: #495057;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 0 5px;
+    }
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .form-control {
+        font-size: 16px;
+    }
+}
