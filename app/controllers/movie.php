@@ -7,8 +7,8 @@ class Movie extends Controller {
     }
 
     public function search() {
-        if (!isset($_REQUEST['movie'])) {
-            // redirect to /movie
+        if (!isset($_REQUEST['movie']) || empty($_REQUEST['movie'])) {
+            header('Location: /movie');
         }
 
         $api = $this->model('Api');
@@ -16,6 +16,15 @@ class Movie extends Controller {
         $movie_title = $_REQUEST['movie'];
         $release_date = $_REQUEST['release_date'];
         $movie = $api->search_movie($movie_title, $release_date);
+
+        // if movie is not found or API call fails, display error message
+        if (!$movie || !isset($movie['Response']) || $movie['Response'] === 'False') {
+            if (isset($movie['Error'])) {
+                $error_message = 'Movie not found. Please try again.';
+                $this->view('movie/index', ['error' => $error_message]);
+                return;
+            }
+        }
 
         // COSC PRoject
         // Movie [search....]
