@@ -9,6 +9,7 @@ class Movie extends Controller {
     public function search() {
         if (!isset($_REQUEST['movie']) || empty($_REQUEST['movie'])) {
             header('Location: /movie');
+            exit; // Add missing exit
         }
 
         $api = $this->model('Api');
@@ -19,23 +20,13 @@ class Movie extends Controller {
 
         // if movie is not found or API call fails, display error message
         if (!$movie || !isset($movie['Response']) || $movie['Response'] === 'False') {
-            if (isset($movie['Error'])) {
-                $error_message = 'Movie not found. Please try again.';
-                $this->view('movie/index', ['error' => $error_message]);
-                return;
-            }
-            
+            $error_message = 'Movie not found. Please try again.';
+            $this->view('movie/index', ['error' => $error_message]);
+            return;
+        }
+
         // if movie is found, display movie details on same page
         $this->view('movie/index', ['movie' => $movie]);
-    }
-
-        // COSC PRoject
-        // Movie [search....]
-        // [Search Button]
-        // Under Search button: [Movie Title] [Release Date]
-        // Movie Rating: 1 (a href=/movie/review/movietitle/1), 2, 3, 4, 5 -> [Submit Button]
-        // Use bootstrap for submit button (5 stars)
-            // getbootstrap.com > star icons
     }
 
     public function review($movie_title = '', $movie_year = '', $rating = '') {
@@ -59,5 +50,5 @@ class Movie extends Controller {
         $_SESSION['success_message'] = $success_message;
         header('Location: /movie/search?movie=' . urlencode($movie_title) . '&release_date=' . urlencode($movie_year));
         exit;
-    }
+}
 }
