@@ -28,6 +28,15 @@
             <?php unset($_SESSION['success_message']); ?>
         <?php endif; ?>
 
+        <!-- Session Error Message -->
+        <?php if (isset($_SESSION['error_message'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo htmlspecialchars($_SESSION['error_message']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <?php unset($_SESSION['error_message']); ?>
+        <?php endif; ?>
+
         <!-- Error Message -->
         <?php if (isset($error)): ?>
             <div class="alert alert-danger" role="alert">
@@ -126,7 +135,13 @@
                                          data-movie-title="<?php echo htmlspecialchars($movie['Title']); ?>" 
                                          data-movie-year="<?php echo htmlspecialchars($movie['Year']); ?>">
                                     </div>
-                                    <small class="text-muted">Click on a star to submit your rating</small>
+                                    <small class="text-muted">
+                                        <?php if (isset($user_score) && $user_score > 0): ?>
+                                            ✅ You already rated this movie <?php echo $user_score; ?>/5 stars. You cannot rate it again.
+                                        <?php else: ?>
+                                            Click on a star to submit your rating
+                                        <?php endif; ?>
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -144,10 +159,21 @@
 
     <script>
     $(document).ready(function() {
+        <?php if (isset($user_score) && $user_score > 0): ?>
+        // User has already rated - show read-only stars
         $('#star-rating').raty({
             starType: 'icon',
             number: 5,
-            score: <?php if (isset($user_score)) { echo $user_score; } else { echo 0; } ?>,
+            score: <?php echo $user_score; ?>,
+            readOnly: true,
+            hints: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars']
+        });
+        <?php else: ?>
+        // User hasn't rated - allow rating
+        $('#star-rating').raty({
+            starType: 'icon',
+            number: 5,
+            score: 0,
             hints: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
             click: function(score, evt) {
                 var movieTitle = $('#star-rating').data('movie-title');
@@ -157,6 +183,7 @@
                 window.location.href = '/movie/review/' + encodeURIComponent(movieTitle) + '/' + movieYear + '/' + score;
             }
         });
+        <?php endif; ?>
     });
     </script>
 

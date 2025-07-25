@@ -26,7 +26,7 @@ class Movie extends Controller {
             return;
         }
 
-        // Check for existing rating
+        // Check for existing rating (use normal title, not encoded)
         $rating_model = $this->model('Rating');
         $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
         $existing_rating = $rating_model->get_user_rating($movie_title, $movie['Year'], $user_id);
@@ -46,23 +46,37 @@ class Movie extends Controller {
             exit;
         }
 
+        // Decode the URL-encoded movie title
+        $decoded_movie_title = urldecode($movie_title);
+        $decoded_movie_year = urldecode($movie_year);
+
         // Tie movie controller to rating model
         $rating_model = $this->model('Rating');
 
         // Check if user is logged in
-        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // user_id gets set to null in our DB if user is not logged in
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
-        // Add rating to our database
-        $rating_model->add_rating($movie_title, $movie_year, $rating, $user_id);
+        // Check if user has already rated this movie (use decoded title)
+        $existing_rating = $rating_model->get_user_rating($decoded_movie_title, $decoded_movie_year, $user_id);
+        if ($existing_rating) {
+            $_SESSION['error_message'] = 'You have already rated this movie.';
+            header('Location: /movie/search?movie=' . urlencode($decoded_movie_title) . '&release_date=' . urlencode($decoded_movie_year));
+            exit;
+        }
+
+        // Add rating to our database (use decoded title)
+        $rating_model->add_rating($decoded_movie_title, $decoded_movie_year, $rating, $user_id);
         $success_message = 'Rating submitted successfully!';
 
         // Store success message in session
         $_SESSION['success_message'] = $success_message;
 
         // Redirect back to the search results page to stay on same movie
-        header('Location: /movie/search?movie=' . urlencode(urldecode($movie_title)) . '&release_date=' . urlencode(urldecode($movie_year)));
+        header('Location: /movie/search?movie=' . urlencode($decoded_movie_title) . '&release_date=' . urlencode($decoded_movie_year));
         exit;
-}
+    }
+
+    
     public function ai_review($movie_title = '', $movie_year = '', $rating = '') {
         // if rating isn't 2-5, redirect to movie page
         if (!in_array($rating, ['2', '3', '4', '5'])) {
@@ -78,11 +92,17 @@ class Movie extends Controller {
         $review = $api->generateReview($movie_title, $movie_year, $rating);
 
         if ($movie && $review) {
+            // Check if user has existing rating for this movie
+            $rating_model = $this->model('Rating');
+            $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+            $existing_rating = $rating_model->get_user_rating(urlencode($movie_title), $movie['Year'], $user_id);
+            $user_score = $existing_rating ? $existing_rating['rating'] : 0;
             // Display on same page
             $this->view('movie/index', [
                 'movie' => $movie,
                 'ai_review' => $review,
-                'ai_rating' => $rating
+                'ai_rating' => $rating,
+                'user_score' => $user_score
             ]);
         } else {
             $_SESSION['error_message'] = 'Could not generate review. Please try again.';
