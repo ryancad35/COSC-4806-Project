@@ -14,3 +14,5 @@ class Omdb extends Controller {
         die;
     }
 }
+
+?>
