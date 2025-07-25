@@ -54,6 +54,31 @@ class Movie extends Controller {
         header('Location: /movie/search?movie=' . urlencode(urldecode($movie_title)) . '&release_date=' . urlencode(urldecode($movie_year)));
         exit;
 }
-}
+    public function ai_review($movie_title = '', $movie_year = '', $rating = '') {
+        // if rating isn't 2-5, redirect to movie page
+        if (!in_array($rating, ['2', '3', '4', '5'])) {
+            header('Location: /movie');
+            exit;
+        }
 
-// Fix: Removed urlencode($movie_title) from the redirect location to prevent double encoding
+        // Get movie data first 
+        $api = $this->model('Api');
+        $movie = $api->search_movie($movie_title, $movie_year);
+
+        // Get AI review
+        $review = $api->generateReview($movie_title, $movie_year, $rating);
+
+        if ($movie && $review) {
+            // Display on same page
+            $this->view('movie/index', [
+                'movie' => $movie,
+                'ai_review' => $review,
+                'ai_rating' => $rating
+            ]);
+        } else {
+            $_SESSION['error_message'] = 'Could not generate review. Please try again.';
+            header('Location: /movie');
+            exit;
+        }
+    }
+}
