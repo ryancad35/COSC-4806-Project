@@ -67,4 +67,29 @@
             </div>
         </div>
 
+
+
+    <!-- Raty CSS and JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/2.9.0/jquery.raty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raty/2.9.0/jquery.raty.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#star-rating').raty({
+            starType: 'icon',
+            number: 5,
+            score: 0,
+            hints: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+            click: function(score, evt) {
+                var movieTitle = $('#star-rating').data('movie-title');
+                var movieYear = $('#star-rating').data('movie-year');
+
+                // Redirect to review URL
+                window.location.href = '/movie/review/' + encodeURIComponent(movieTitle) + '/' + movieYear + '/' + score;
+            }
+        });
+    });
+    </script>
+
 <?php require_once 'app/views/templates/footer.php' ?> 
