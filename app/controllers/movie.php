@@ -7,15 +7,16 @@ class Movie extends Controller {
     }
 
     public function search() {
-        if (!isset($_REQUEST['movie']) || empty($_REQUEST['movie'])) {
+        // Handle both POST (form) and GET (redirect after rating) requests
+        $movie_title = $_REQUEST['movie'] ?? '';
+        $release_date = $_REQUEST['release_date'] ?? '';
+
+        if (empty($movie_title)) {
             header('Location: /movie');
-            exit; // Add missing exit
+            exit; 
         }
 
         $api = $this->model('Api');
-
-        $movie_title = $_REQUEST['movie'];
-        $release_date = $_REQUEST['release_date'];
         $movie = $api->search_movie($movie_title, $release_date);
 
         // if movie is not found or API call fails, display error message
@@ -46,9 +47,13 @@ class Movie extends Controller {
         $rating_model->add_rating($movie_title, $movie_year, $rating, $user_id);
         $success_message = 'Rating submitted successfully!';
 
-        // Create a session variable to store the success message
+        // Store success message in session
         $_SESSION['success_message'] = $success_message;
-        header('Location: /movie/search?movie=' . urlencode($movie_title) . '&release_date=' . urlencode($movie_year));
+
+        // Redirect back to the search results page to stay on same movie
+        header('Location: /movie/search?movie=' . urlencode(urldecode($movie_title)) . '&release_date=' . urlencode(urldecode($movie_year)));
         exit;
 }
 }
+
+// Fix: Removed urlencode($movie_title) from the redirect location to prevent double encoding
