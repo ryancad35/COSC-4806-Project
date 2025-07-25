@@ -1,4 +1,3 @@
-
 <?php
 if (!isset($_SESSION['auth'])) {
     header('Location: /login');
@@ -34,6 +33,9 @@ if (!isset($_SESSION['auth'])) {
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/reminders">Reminders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/movie">Movies</a>
           </li>
           <?php if (isset($_SESSION['username']) && $_SESSION['username'] === 'admin'): ?>
           <li class="nav-item">

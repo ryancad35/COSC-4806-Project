@@ -24,6 +24,9 @@ if (isset($_SESSION['auth']) == 1) {
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
+            <a class="nav-link" href="/movie">Movies</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li>
           <li class="nav-item">
