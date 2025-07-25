@@ -147,7 +147,7 @@
         $('#star-rating').raty({
             starType: 'icon',
             number: 5,
-            score: 0,
+            score: <?php if (isset($user_score)) { echo $user_score; } else { echo 0; } ?>,
             hints: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
             click: function(score, evt) {
                 var movieTitle = $('#star-rating').data('movie-title');

@@ -26,8 +26,17 @@ class Movie extends Controller {
             return;
         }
 
+        // Check for existing rating
+        $rating_model = $this->model('Rating');
+        $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+        $existing_rating = $rating_model->get_user_rating($movie_title, $movie['Year'], $user_id);
+        $user_score = $existing_rating ? $existing_rating['rating'] : 0;
+
         // if movie is found, display movie details on same page
-        $this->view('movie/index', ['movie' => $movie]);
+        $this->view('movie/index', [
+            'movie' => $movie,
+            'user_score' => $user_score
+        ]);
     }
 
     public function review($movie_title = '', $movie_year = '', $rating = '') {
