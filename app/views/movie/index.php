@@ -68,6 +68,74 @@
         </div>
 
 
+    <!-- Movie Results -->
+        <?php if (isset($movie)): ?>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Movie Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php if (isset($movie['Poster']) && $movie['Poster'] !== 'N/A'): ?>
+                                    <img src="<?php echo htmlspecialchars($movie['Poster']); ?>" class="img-fluid rounded" alt="Movie Poster">
+                                <?php else: ?>
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 300px;">
+                                        <span class="text-muted">No Poster Available</span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-md-8">
+                                <h4><?php echo htmlspecialchars($movie['Title']); ?></h4>
+                                <p><strong>Release Year:</strong> <?php echo htmlspecialchars($movie['Year']); ?></p>
+
+                                <p><strong>Description:</strong></p>
+                                <p><?php echo htmlspecialchars($movie['Plot']); ?></p>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p><strong>Metascore:</strong> 
+                                            <?php 
+                                            if (isset($movie['Metascore']) && $movie['Metascore'] !== 'N/A') {
+                                                echo htmlspecialchars($movie['Metascore']) . '/100';
+                                            } else {
+                                                echo 'Not Available';
+                                            }
+                                            ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p><strong>IMDB Rating:</strong> 
+                                            <?php 
+                                            if (isset($movie['imdbRating']) && $movie['imdbRating'] !== 'N/A') {
+                                                echo htmlspecialchars($movie['imdbRating']) . '/10';
+                                            } else {
+                                                echo 'Not Available';
+                                            }
+                                            ?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Rating Section -->
+                                <div class="mt-4">
+                                    <h6>Rate this Movie:</h6>
+                                    <div id="star-rating" 
+                                         data-movie-title="<?php echo htmlspecialchars($movie['Title']); ?>" 
+                                         data-movie-year="<?php echo htmlspecialchars($movie['Year']); ?>">
+                                    </div>
+                                    <small class="text-muted">Click on a star to submit your rating</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
 
     <!-- Raty CSS and JS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/raty/2.9.0/jquery.raty.min.css">
