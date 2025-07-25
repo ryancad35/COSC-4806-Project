@@ -152,7 +152,6 @@
                                        class="btn btn-primary">
                                         🤖 Generate Review (<?php echo $user_score; ?>/5 ⭐)
                                     </a>
-                                    <small class="text-muted d-block mt-1">AI will write a review from your perspective based on your rating</small>
                                 </div>
                                 <?php endif; ?>
                             </div>
