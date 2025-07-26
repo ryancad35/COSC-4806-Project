@@ -26,10 +26,10 @@ class Movie extends Controller {
             return;
         }
 
-        // Check for existing rating
+        // Check for existing rating (use normal title, not encoded)
         $rating_model = $this->model('Rating');
         $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-        $existing_rating = $rating_model->get_user_rating(urlencode($movie_title), $movie['Year'], $user_id);
+        $existing_rating = $rating_model->get_user_rating($movie_title, $movie['Year'], $user_id);
         $user_score = $existing_rating ? $existing_rating['rating'] : 0;
 
         // if movie is found, display movie details on same page
@@ -76,7 +76,6 @@ class Movie extends Controller {
         exit;
     }
 
-    
     public function ai_review($movie_title = '', $movie_year = '', $rating = '') {
         // if rating isn't 2-5, redirect to movie page
         if (!in_array($rating, ['2', '3', '4', '5'])) {
@@ -86,16 +85,17 @@ class Movie extends Controller {
 
         // Get movie data first 
         $api = $this->model('Api');
-        $movie = $api->search_movie($movie_title, $movie_year);
+        $decoded_movie_title = urldecode($movie_title);
+        $movie = $api->search_movie($decoded_movie_title, $movie_year);
 
         // Get AI review
-        $review = $api->generateReview($movie_title, $movie_year, $rating);
+        $review = $api->generateReview($decoded_movie_title, $movie_year, $rating);
 
         if ($movie && $review) {
             // Check if user has existing rating for this movie
             $rating_model = $this->model('Rating');
             $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-            $existing_rating = $rating_model->get_user_rating(urlencode($movie_title), $movie['Year'], $user_id);
+            $existing_rating = $rating_model->get_user_rating($decoded_movie_title, $movie_year, $user_id);
             $user_score = $existing_rating ? $existing_rating['rating'] : 0;
             // Display on same page
             $this->view('movie/index', [
