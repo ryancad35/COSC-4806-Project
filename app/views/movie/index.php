@@ -148,10 +148,11 @@
                                 <div class="mt-4">
                                     <h6>AI Review:</h6>
                                     <p class="text-muted mb-2">Generate an AI review based on your <?php echo $user_score; ?>/5 star rating:</p>
-                                    <a href="/movie/ai_review/<?php echo urlencode($movie['Title']); ?>/<?php echo htmlspecialchars($movie['Year']); ?>/<?php echo $user_score; ?>" 
+                                    <a href="/movie/ai_review/<?php echo urlencode($movie['Title']); ?>/<?php echo htmlspecialchars($movie['Year']); ?>/<?php echo $user_score; ?>#ai-review" 
                                        class="btn btn-primary">
                                         🤖 Generate Review (<?php echo $user_score; ?>/5 ⭐)
                                     </a>
+                                    <small class="text-muted d-block mt-1">AI will write a review from your perspective based on your rating</small>
                                 </div>
                                 <?php endif; ?>
                             </div>
@@ -163,12 +164,12 @@
         <?php endif; ?>
 
         <!-- AI Review Results -->
-        <?php if (isset($ai_review)): ?>
-        <div class="row mt-4">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>AI-Generated Review - <?php echo htmlspecialchars($ai_rating); ?>/5 Stars</h5>
+                    <?php if (isset($ai_review)): ?>
+                    <div class="row mt-4" id="ai-review">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>AI-Generated Review - <?php echo htmlspecialchars($ai_rating); ?>/5 Stars</h5>
                     </div>
                     <div class="card-body">
                         <div class="alert alert-info">

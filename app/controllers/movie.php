@@ -26,10 +26,10 @@ class Movie extends Controller {
             return;
         }
 
-        // Check for existing rating (use normal title, not encoded)
+        // Check for existing rating
         $rating_model = $this->model('Rating');
         $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-        $existing_rating = $rating_model->get_user_rating($movie_title, $movie['Year'], $user_id);
+        $existing_rating = $rating_model->get_user_rating(urlencode($movie_title), $movie['Year'], $user_id);
         $user_score = $existing_rating ? $existing_rating['rating'] : 0;
 
         // if movie is found, display movie details on same page
@@ -95,8 +95,7 @@ class Movie extends Controller {
             // Check if user has existing rating for this movie
             $rating_model = $this->model('Rating');
             $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-            $decoded_movie_title = urldecode($movie_title); // Decode the URL-encoded title
-            $existing_rating = $rating_model->get_user_rating($decoded_movie_title, $movie['Year'], $user_id);
+            $existing_rating = $rating_model->get_user_rating(urlencode($movie_title), $movie['Year'], $user_id);
             $user_score = $existing_rating ? $existing_rating['rating'] : 0;
             // Display on same page
             $this->view('movie/index', [

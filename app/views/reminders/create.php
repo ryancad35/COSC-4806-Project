@@ -14,8 +14,10 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <?php if ($error): ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php if (isset($error)): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo htmlspecialchars($error); ?>
+                    </div>
                 <?php endif; ?>
                 <h1>Create a Reminder</h1>
             </div>
